@@ -162,24 +162,18 @@ byte addPayload(byte DataID) {
 
     //Little Endian exception
     case 0x06:  // Voltage, first 4 bits are cell number, rest 12 are voltage in 1/500v steps, scale 0-4.2v
-      {
-        int val = (int)(2100.0*(iob_vbat_A/3.0)/4.2); 
-        int tmp1 = FixInt(val, 2);
-        int tmp2 = FixInt(val, 1);
-        
+      if (cell_count < 3) {
+        int tmp1 = FixInt(cellV[cell_count], 2);
+        int tmp2 = FixInt(cellV[cell_count], 1);
+
         outBuff[payloadLen + 0] = 0x06;
-        outBuff[payloadLen + 1] = tmp1;
+        outBuff[payloadLen + 1] = tmp1 + (cell_count * 16);
         outBuff[payloadLen + 2] = tmp2;
-        outBuff[payloadLen + 3] = 0x06;
-        outBuff[payloadLen + 4] = tmp1 + 0x10;
-        outBuff[payloadLen + 5] = tmp2;
-        outBuff[payloadLen + 6] = 0x06;
-        outBuff[payloadLen + 7] = tmp1 + 0x20;
-        outBuff[payloadLen + 8] = tmp2;
-//      outBuff[payloadLen + 1] = (3 << 4) || FixInt(int(iob_vbat_A/3.0), 2);
-//      outBuff[payloadLen + 2] = FixInt(int(iob_vbat_A/3.0), 1);
+        addedLen = 3;
         
-        addedLen = 9;
+        cell_count++;
+      } else {
+        cell_count = 0; 
       }
       break;
 //OK
@@ -398,4 +392,6 @@ void updateTime() {
     hour = 0;
   }
 }
+
+
 

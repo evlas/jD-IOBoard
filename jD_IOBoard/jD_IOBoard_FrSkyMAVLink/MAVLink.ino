@@ -109,23 +109,25 @@ void read_mavlink(){
             iob_ampbatt_A = (mavlink_msg_sys_status_get_current_battery(&msg) / 1000.0f);
             uint16_t tmp = mavlink_msg_sys_status_get_battery_remaining(&msg);
 
-            if (tmp < 13) {
-              iob_battery_remaining_A = 0;
-            } else if (tmp < 37 ) {
-              iob_battery_remaining_A = 25;
-            } else if (tmp < 63 ) {
-              iob_battery_remaining_A = 50;
-            } else if (tmp < 88 ) {
-              iob_battery_remaining_A = 75;
-            } else {
-              iob_battery_remaining_A = 100;
-            }
+            cellVvalue();
 
-//            if (tmp > 0) {
-//              iob_battery_remaining_A = tmp;
+//            if (tmp < 13) {
+//              iob_battery_remaining_A = 0;
+//            } else if (tmp < 37 ) {
+//              iob_battery_remaining_A = 25;
+//            } else if (tmp < 63 ) {
+//              iob_battery_remaining_A = 50;
+//            } else if (tmp < 88 ) {
+//              iob_battery_remaining_A = 75;
 //            } else {
-//              iob_battery_remaining_A = tmp;
+//              iob_battery_remaining_A = 100;
 //            }
+
+            if (tmp > 0) {
+              iob_battery_remaining_A = tmp;
+            } else {
+              iob_battery_remaining_A = tmp;
+            }
           }
           break;
 //OK          
@@ -214,5 +216,14 @@ void read_mavlink(){
   // Update global packet drops counter
   packet_drops += status.packet_rx_drop_count;
   parse_error += status.parse_error;
-
 }
+
+void cellVvalue() {
+  int i;
+  int val = (int)(2100.0*(iob_vbat_A/3.0)/4.2);
+  
+  for (i=0;i<CELL;i++) {
+    cellV[i]=val;
+  }
+}
+

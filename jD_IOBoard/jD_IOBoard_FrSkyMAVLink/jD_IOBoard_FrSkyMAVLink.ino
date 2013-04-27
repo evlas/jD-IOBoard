@@ -131,7 +131,6 @@
 //#define ledPin 13     // Heartbeat LED if any
 #define LOOPTIME  50  // Main loop time for heartbeat
 
-
 #define TELEMETRY_SPEED  57600  // How fast our MAVLink telemetry is coming to Serial port
 
 #ifdef FRSER
