@@ -220,9 +220,16 @@ void read_mavlink(){
 
 void cellVvalue() {
   int i;
-  int val = (int)(2100.0*(iob_vbat_A/3.0)/4.2);
-  
-  for (i=0;i<CELL;i++) {
+  //no 3S temporary fix 
+  int val = (int)(2100.0*(iob_vbat_A/(float(cell_numb)))/4.2);
+
+  //no 3S temporary fix
+  if ((val > 2100) && (cell_numb < MAXCELL)) {
+    cell_numb++;
+    return;
+  }
+    
+  for (i=0;i<cell_numb;i++) {
     cellV[i]=val;
   }
 }

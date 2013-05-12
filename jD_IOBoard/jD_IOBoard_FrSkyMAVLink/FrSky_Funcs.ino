@@ -70,13 +70,13 @@ void update_FrSky() {
       payloadLen += addPayload(0x14);   // Course, degree
       payloadLen += addPayload(0x1c);   // Course, after "."
     
-      payloadLen += addPayload(0x13);   // Latitude dddmmm 
-      payloadLen += addPayload(0x1b);   // Latitude .mmmm (after ".")
-      payloadLen += addPayload(0x23);   // N/S
+      payloadLen += addPayload(0x13);   // Longitude dddmmm 
+      payloadLen += addPayload(0x1b);   // Longitude .mmmm (after ".")
+      payloadLen += addPayload(0x23);   // E/W
 
-      payloadLen += addPayload(0x12);   // Longitude dddmmm
-      payloadLen += addPayload(0x1a);   // Longitude .mmmm (after ".")
-      payloadLen += addPayload(0x22);   // E/W
+      payloadLen += addPayload(0x12);   // Latitude dddmmm
+      payloadLen += addPayload(0x1a);   // Latitude .mmmm (after ".")
+      payloadLen += addPayload(0x22);   // N/S
     
       payloadLen += addPayload(0x11);   // GPS Speed Knots
       payloadLen += addPayload(0x19);   // GPS Speed after "."
@@ -201,40 +201,40 @@ byte addPayload(byte DataID) {
       break;
 //OK
     //Little Endian exception
-    case 0x12:  // Longitude, before "."
-      outBuff[payloadLen + 0] = 0x12;
+    case 0x12:  // Latitude, before "."
+      outBuff[payloadLen + 0] = 0x13;
       outBuff[payloadLen + 1] = FixInt(long(iob_lon),1);
       outBuff[payloadLen + 2] = FixInt(long(iob_lon),2);
       addedLen = 3;      
       break;
-    case 0x12+8:  // Longitude, after "."
-      outBuff[payloadLen + 0] = 0x12+8;
+    case 0x12+8:  // Latitude, after "."
+      outBuff[payloadLen + 0] = 0x13+8;
       outBuff[payloadLen + 1] = FixInt(long((iob_lon - long(iob_lon)) * 10000.0), 1);  // Only allow .0000 4 digits
       outBuff[payloadLen + 2] = FixInt(long((iob_lon - long(iob_lon)) * 10000.0), 2);  // Only allow .0000 4 digits after .
       addedLen = 3;      
       break;
-    case 0x1A+8:  // E/W
-      outBuff[payloadLen + 0] = 0x1A+8;
+    case 0x1A+8:  // N/S
+      outBuff[payloadLen + 0] = 0x1B+8;
       outBuff[payloadLen + 1] = iob_lon_dir;
       outBuff[payloadLen + 2] = 0;
       addedLen = 3;      
       break;
 //OK
     //Little Endian exception
-    case 0x13:  // Latitude, before "."
-      outBuff[payloadLen + 0] = 0x13;
+    case 0x13:  // Longitude, before "."
+      outBuff[payloadLen + 0] = 0x12;
       outBuff[payloadLen + 1] = FixInt(long(iob_lat),1);
       outBuff[payloadLen + 2] = FixInt(long(iob_lat),2);
       addedLen = 3;      
       break;
-    case 0x13+8:  // Latitude, after "."
-      outBuff[payloadLen + 0] = 0x13+8;
+    case 0x13+8:  // Longitude, after "."
+      outBuff[payloadLen + 0] = 0x12+8;
       outBuff[payloadLen + 1] = FixInt(long((iob_lat - long(iob_lat)) * 10000.0), 1);
       outBuff[payloadLen + 2] = FixInt(long((iob_lat - long(iob_lat)) * 10000.0), 2);      
       addedLen = 3;      
       break;  
-    case 0x1B+8:  // N/S
-      outBuff[payloadLen + 0] = 0x1B+8;
+    case 0x1B+8:  // E/W
+      outBuff[payloadLen + 0] = 0x1A+8;
       outBuff[payloadLen + 1] = iob_lat_dir;
       outBuff[payloadLen + 2] = 0;      
       addedLen = 3;      

@@ -34,7 +34,7 @@
 //#define NOTHINGYET 7
 
 //Battery
-#define CELL 3
+#define MAXCELL 6
 
 ///////////////////////////
 // Global variables
@@ -65,8 +65,9 @@ static int8_t    iob_temperature;
 static float     iob_vbat_A = 0;                 // Battery A voltage in volt
 static float     iob_ampbatt_A = 0;              // Battery A ampere in ampere
 static uint16_t  iob_battery_remaining_A = 0;    // 0 to 100 <=> 0 to 1000
+static int       cell_numb = 3; 
 static int       cell_count = 0;
-static int       cellV[CELL];                    // Volts for each cell
+static int       cellV[MAXCELL];                    // Volts for each cell
 
 static uint16_t  iob_mode = 0;                   // Navigation mode from RC AC2 = CH5, APM = CH8
 static uint8_t   iob_nav_mode = 0;               // Navigation mode from RC AC2 = CH5, APM = CH8
