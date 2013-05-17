@@ -162,7 +162,7 @@ byte addPayload(byte DataID) {
 
     //Little Endian exception
     case 0x06:  // Voltage, first 4 bits are cell number, rest 12 are voltage in 1/500v steps, scale 0-4.2v
-      if (cell_count < 3) {
+      if (cell_count < cell_numb) {
         int tmp1 = FixInt(cellV[cell_count], 2);
         int tmp2 = FixInt(cellV[cell_count], 1);
 
